@@ -326,9 +326,9 @@ def process_and_display(text):
         if sender:
             sent = send_reply(sender, subject, response)
             if sent:
-                st.success(f"✅ Reply automatically sent to {sender}")
+                st.success(f"Reply automatically sent to {sender}")
             else:
-                st.error("❌ Failed to send reply")
+                st.error("Failed to send reply")
 
         # Clear session after processing
         for key in ["auto_msg", "auto_process", "sender", "subject"]:
@@ -338,7 +338,7 @@ def process_and_display(text):
         # Intent
         st.markdown(f"""
         <div class='card'>
-            <div class='card-label'>🎯 Detected Intent</div>
+            <div class='card-label'> Detected Intent</div>
             <span class='badge badge-intent'>{decision['intent'].title()}</span>
         </div>""", unsafe_allow_html=True)
 

@@ -24,7 +24,7 @@ class LLMService:
 
             output = response.choices[0].message.content.strip()
             parsed = self.safe_json_load(output)
-            parsed["original_text"] = text   # ✅ ADD THIS LINE
+            parsed["original_text"] = text   #  ADD THIS LINE
             return parsed
 
         except Exception as e:
@@ -114,6 +114,6 @@ ONLY RETURN JSON.
                 "locations": [],
                 "amounts": []
             },
-            "original_text": ""   # ✅ ADD THIS
+            "original_text": ""   #  ADD THIS
             
         }

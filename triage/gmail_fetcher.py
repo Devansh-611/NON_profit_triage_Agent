@@ -1,11 +1,15 @@
 import imapclient
 import email
 import smtplib
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-EMAIL = "gmail"
-APP_PASSWORD = "password"
+EMAIL = os.getenv("EMAIL")
+APP_PASSWORD = os.getenv("APP_PASSWORD")
 
 def fetch_latest_email():
     try:
@@ -14,20 +18,21 @@ def fetch_latest_email():
 
             print("Step 2: Logging in...")
             client.login(EMAIL, APP_PASSWORD)
-            print("✅ Login successful")
+            print(" Login successful")
 
             print("Step 3: Selecting INBOX...")
             client.select_folder("INBOX")
 
             print("Step 4: Searching emails...")
-            messages = client.search(["ALL"])
-            print(f"✅ Found {len(messages)} emails")
+            messages = client.search(["UNSEEN"])
+            print(f" Found {len(messages)} emails")
 
             if not messages:
-                print("❌ No emails found")
+                print(" No emails found")
                 return None
 
             latest = messages[-1]
+            client.add_flags([latest], [imapclient.SEEN])
             print(f"Step 5: Fetching email ID {latest}...")
             raw = client.fetch([latest], ["RFC822"])
 
@@ -35,8 +40,8 @@ def fetch_latest_email():
             msg = email.message_from_bytes(raw[latest][b"RFC822"])
             subject = msg["subject"]
             sender = msg["from"]
-            print(f"✅ Subject: {subject}")
-            print(f"✅ Sender: {sender}")
+            print(f" Subject: {subject}")
+            print(f" Sender: {sender}")
 
             body = ""
             if msg.is_multipart():
@@ -44,12 +49,12 @@ def fetch_latest_email():
                 for part in msg.walk():
                     if part.get_content_type() == "text/plain":
                         body = part.get_payload(decode=True).decode()
-                        print(f"✅ Body extracted: {body[:50]}...")
+                        print(f" Body extracted: {body[:50]}...")
                         break
             else:
                 print("Step 7: Single part email, extracting text...")
                 body = msg.get_payload(decode=True).decode()
-                print(f"✅ Body extracted: {body[:50]}...")
+                print(f" Body extracted: {body[:50]}...")
 
             # Extract just the email address from sender
             if "<" in sender:
@@ -64,7 +69,7 @@ def fetch_latest_email():
             }
 
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         return None
 
 
@@ -82,9 +87,9 @@ def send_reply(to_email, subject, body):
             server.login(EMAIL, APP_PASSWORD)
             server.sendmail(EMAIL, to_email, msg.as_string())
 
-        print(f"✅ Reply sent to {to_email}")
+        print(f" Reply sent to {to_email}")
         return True
 
     except Exception as e:
-        print(f"❌ Failed to send email: {e}")
+        print(f" Failed to send email: {e}")
         return False
