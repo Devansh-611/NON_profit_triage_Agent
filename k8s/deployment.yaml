@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: triage-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: triage-app
+  template:
+    metadata:
+      labels:
+        app: triage-app
+    spec:
+      containers:
+      - name: triage-container
+        image: dev611doc/triage-ai-app:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8501
+        env:
+        - name: EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: triage-secret
+              key: EMAIL
+        - name: APP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: triage-secret
+              key: APP_PASSWORD
+        - name: GROQ_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: triage-secret
+              key: GROQ_API_KEY
