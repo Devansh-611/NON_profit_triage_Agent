@@ -8,7 +8,7 @@ from triage.gmail_fetcher import fetch_latest_email, send_reply
 # Page Config
 # ------------------------------
 st.set_page_config(
-    page_title="AI Triage Agent",
+    page_title="AI Triage old Agent",
     page_icon="🤖",
     layout="wide"
 )
