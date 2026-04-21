@@ -301,7 +301,7 @@ with st.sidebar:
 st.markdown("""
 <div class='hero-section'>
     <div class='hero-tag'>✦ AI-AGENT</div>
-    <div class='hero-title'>Non-Profit Fully Support<br><span>Triage Agent</span></div>
+    <div class='hero-title'>Non-Profit Support<br><span>Triage Agent</span></div>
     <div class='hero-subtitle'>Analyze incoming emails, classify intent, detect urgency, and generate thoughtful replies — all in seconds.</div>
 </div>
 """, unsafe_allow_html=True)
